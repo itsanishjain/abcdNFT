@@ -8,11 +8,28 @@
   </head>
   <body>
     <h1>Home</h1>
+
+    <hr />
+    <h2>Upload your layers</h2>
+
     <form action="/upload-layers" method="post" enctype="multipart/form-data">
+      <input name="images" type="file" multiple />
+      <button type="submit">Upload</button>
+    </form>
+
+    <hr />
+    <h2>Generate your art collection</h2>
+
+    <form action="/generate" method="post">
       <label>enter the number of images you want to generate</label>
       <input name="editionSize" placeholder="eg: 10" />
-      <input name="images" type="file" multiple />
       <button type="submit">generate</button>
+    </form>
+
+    <hr />
+    <h2>Upload to IPFS</h2>
+    <form action="/upload-images-to-ipfs" method="post">
+      <button type="submit">Upload Images</button>
     </form>
   </body>
 </html>

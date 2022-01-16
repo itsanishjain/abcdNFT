@@ -6,10 +6,11 @@ const port = process.env.PORT || 3000;
 // use dotenv
 require("dotenv").config();
 
-
 const { startCreating, buildSetup } = require("./src/main.js");
 
 const { upload } = require("./uploadImages.js");
+const { uploadImagesToIPFS } = require("./src/uploadFileIPFS.js");
+const { uploadMetaToIPFS } = require("./src/uploadMetadataIPFS.js");
 const fs = require("fs");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -39,17 +40,10 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
-app.post("/generate", async (req, res) => {
+app.post("/generate", (req, res) => {
   console.log("Generating...", req.body);
-  console.log(req.body.images);
-  console.log(req.body.editionSize);
-  //  ( () => {
-  //   buildSetup();
-  //   startCreating(3);
-  // })();
-
   buildSetup();
-  startCreating(3);
+  startCreating(req.body.editionSize);
   console.log("Generated");
 
   res.send("Hello World!");
@@ -70,18 +64,13 @@ app.post("/upload-layers", upload.array("images", 10), function (req, res) {
     layerNumber = 0;
   }
 
-  // read a cookie
-//   console.log(req.cookies, "COOKIES");
   let newPath = "./pub/layer_" + layerNumber.toString();
   let oldPath = "./pub";
+
+  if (fs.existsSync(newPath)) {
+    fs.rmdirSync(newPath, { recursive: true });
+  }
   fs.mkdirSync(newPath);
-  //   fs.rename(oldPath, newPath, function (err) {
-  //     if (err) {
-  //       console.log(err);
-  //     } else {
-  //       console.log("DONE......");
-  //     }
-  //   });
 
   // moving files from pub to newPath
   fs.readdir(oldPath, (err, files) => {
@@ -100,7 +89,15 @@ app.post("/upload-layers", upload.array("images", 10), function (req, res) {
   res.send("uploaded Layers" + layerNumber.toString());
 });
 
-// listen to the port
+app.post("/upload-images-to-ipfs", async (req, res) => {
+  console.log("uploading images to ipfs");
+  // uploadImagesToIPFS();
+  uploadMetaToIPFS();
+  console.log("UPLOADEDDDDDDDDDDDDDDDDD");
+  res.send("uploaded images to ipfs");
+});
+
+// listen on port
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });

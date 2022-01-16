@@ -25,7 +25,10 @@ const buildSetup = (deleteLayersFolder = false) => {
   if (fs.existsSync(buildDir)) {
     fs.rmdirSync(buildDir, { recursive: true });
   }
+  // fs.mkdirSync(buildDir);
   fs.mkdirSync(buildDir);
+  fs.mkdirSync(buildDir + "/images");
+  fs.mkdirSync(buildDir + "/json");
 
   // deleting layers dir as well
   if (deleteLayersFolder) {
@@ -34,6 +37,7 @@ const buildSetup = (deleteLayersFolder = false) => {
     }
     fs.mkdirSync(layersDir);
   }
+  console.log("Created build folder");
 };
 
 const cleanName = (_str) => {
@@ -64,7 +68,8 @@ const layersSetup = (layersOrder) => {
 
 const saveImage = (_editionCount) => {
   fs.writeFileSync(
-    `${buildDir}/${_editionCount}.png`,
+    // `${buildDir}/${_editionCount}.png`,
+    `${buildDir}/images/${_editionCount}.png`,
     canvas.toBuffer("image/png")
   );
 };
@@ -83,14 +88,19 @@ const drawBackground = () => {
 const addMetadata = (_dna, _edition) => {
   let dateTime = Date.now();
   let tempMetadata = {
-    dna: _dna.join(""),
     name: `#${_edition}`,
     description: description,
-    image: `${baseUri}/${_edition}.png`,
-    edition: _edition,
-    date: dateTime,
+    // image: `${baseUri}/${_edition}.png`,
+    // Specific for NFT-PORT
+    file_url: `${baseUri}/images/${_edition}.png`,
+    custom_fields: {
+      dna: _dna.join(""),
+      edition: _edition,
+      date: dateTime,
+      compiler: "HashLips Art Engine",
+    },
+
     attributes: attributesList,
-    compiler: "HashLips Art Engine",
   };
   metadataList.push(tempMetadata);
   attributesList = [];
@@ -142,17 +152,18 @@ const createDna = (_layers) => {
 };
 
 const writeMetaData = (_data) => {
-  fs.writeFileSync(`${buildDir}/_metadata.json`, _data);
+  fs.writeFileSync(`${buildDir}/json/_metadata.json`, _data);
 };
 
 const saveMetaDataSingleFile = (_editionCount) => {
   fs.writeFileSync(
-    `${buildDir}/${_editionCount}.json`,
-    JSON.stringify(metadataList.find((meta) => meta.edition == _editionCount))
+    // `${buildDir}/${_editionCount}.json`,
+    `${buildDir}/json/${_editionCount}.json`,
+    JSON.stringify(metadataList.find((meta) => meta.custom_fields.edition == _editionCount))
   );
 };
 
-const startCreating = async (editionSizeParam) => {
+const startCreating = async (editionSizeParam = 3) => {
   console.log("GOT PARAM", editionSizeParam);
   let editionCount = 1;
   let failedCount = 0;

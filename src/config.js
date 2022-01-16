@@ -4,27 +4,27 @@ const baseUri = "https://hashlips/nft";
 
 
 // ORIGINAL
-// const layersOrder = [
-//   { name: "Background" },
-//   { name: "Eyeball" },
-//   { name: "Eye color" },
-//   { name: "Iris" },
-//   { name: "Shine" },
-//   { name: "Bottom lid" },
-//   { name: "Top lid" },
-// ];
+const layersOrder = [
+  { name: "Background" },
+  { name: "Eyeball" },
+  { name: "Eye color" },
+  { name: "Iris" },
+  { name: "Shine" },
+  { name: "Bottom lid" },
+  { name: "Top lid" },
+];
 
 // CHANGED
 
-const layersOrder = [
-  { name: "Background" },
-  { name: "Iris" },
-  { name: "Eye color" },
-  { name: "Top lid" },
-  { name: "Shine" } ,
-  { name: "Bottom lid" },
-  { name: "Eyeball" },
-];
+// const layersOrder = [
+//   { name: "Background" },
+//   { name: "Iris" },
+//   { name: "Eye color" },
+//   { name: "Top lid" },
+//   { name: "Shine" } ,
+//   { name: "Bottom lid" },
+//   { name: "Eyeball" },
+// ];
 
 
 
