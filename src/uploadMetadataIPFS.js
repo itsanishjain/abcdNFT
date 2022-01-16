@@ -9,12 +9,13 @@ const AUTH = "198adc16-5d25-450e-bf19-130b0880a38a";
 
 const TIMEOUT = 1000; // Milliseconds. Extend this if needed to wait for each upload. 1000 = 1 second.
 
-const allMetadata = [];
 async function uploadMetaToIPFS() {
+  const allMetadata = [];
   if (!fs.existsSync(path.join(`${basePath}/build`, "/ipfsMetas"))) {
     fs.mkdirSync(path.join(`${basePath}/build`, "ipfsMetas"));
   }
 
+  
   const files = fs.readdirSync(readDir);
   files.sort(function (a, b) {
     return a.split(".")[0] - b.split(".")[0];
@@ -114,7 +115,7 @@ const writeResponseMetaData = (_data) => {
   );
 };
 
-uploadMetaToIPFS();
+// uploadMetaToIPFS();
 
 module.exports = {
   uploadMetaToIPFS,

@@ -11,25 +11,24 @@ const { startCreating, buildSetup } = require("./src/main.js");
 const { upload } = require("./uploadImages.js");
 const { uploadImagesToIPFS } = require("./src/uploadFileIPFS.js");
 const { uploadMetaToIPFS } = require("./src/uploadMetadataIPFS.js");
+
+const { getNFT, getCollection } = require("./src/getnfts.js");
 const fs = require("fs");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 
-// var multer = require("multer");
-// var upload = multer();
-
-// set a static folder
-app.use(express.static("public"));
-
 // set a view engine
 app.set("view engine", "ejs");
+
+// set a static folder
+app.use(express.static(path.join(__dirname, "public")));
 
 // set to expect json
 app.use(express.json());
 // set to expect urlencoded
 app.use(express.urlencoded({ extended: true }));
 // set to expect images
-app.use(express.static("public/images"));
+// app.use(express.static("public/images"));
 
 // set to parse cookies
 app.use(cookieParser());
@@ -95,6 +94,13 @@ app.post("/upload-images-to-ipfs", async (req, res) => {
   uploadMetaToIPFS();
   console.log("UPLOADEDDDDDDDDDDDDDDDDD");
   res.send("uploaded images to ipfs");
+});
+
+app.get("/my-nfts", async (req, res) => {
+  let collections = getCollection();
+  res.render("my-nfts", { collections });
+
+  // res.render("card");
 });
 
 // listen on port

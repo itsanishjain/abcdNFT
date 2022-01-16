@@ -1,0 +1,25 @@
+
+    <%- include('partials/header') -%>
+  
+
+    NFTS <%= JSON.stringify(collections) %>
+
+    <ul class="timeline">
+      <% for( let i = 0; i < collections.length; i++ ) { %> <% for( let j = 0; j
+      < collections[i].minted_nfts.length; j++ ) { %>
+
+      <li><%= collections[i].minted_nfts[j].chain %></li>
+
+      <% } %> <% } %>
+    </ul>
+  </body>
+
+  <button onclick="getAssets()">GET</button>
+
+  <button onclick="sell()">SELL</button>
+
+  <button onclick="login()">Login</button>
+
+  <script src="moralisScripts.js"></script>
+  <%- include('partials/footer') -%>
+</html>

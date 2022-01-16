@@ -16,7 +16,7 @@ const TIMEOUT = 1000; // Milliseconds. Extend this if needed to wait for each up
 const allMetadata = [];
 
 async function uploadImagesToIPFS() {
-  console.log("Uploading Files to IPFS via NFTPORT------------------")
+  console.log("Uploading Files to IPFS via NFTPORT------------------");
   const files = fs.readdirSync(`${basePath}/build/images`);
   files.sort(function (a, b) {
     return a.split(".")[0] - b.split(".")[0];
@@ -51,7 +51,6 @@ async function uploadImagesToIPFS() {
   console.log("All files uploaded! loops ENDS");
 }
 
-
 function timer(ms) {
   return new Promise((res) => setTimeout(res, ms));
 }
@@ -63,22 +62,22 @@ async function fetchWithRetry(file) {
       const formData = new FormData();
       const fileStream = fs.createReadStream(
         `${basePath}/build/images/${_file}`
-        );
-        formData.append("file", fileStream);
-        
-        let url = "https://api.nftport.xyz/v0/files";
-        let options = {
-          method: "POST",
-          headers: {
-            Authorization: AUTH,
-          },
-          body: formData,
-        };
-        
-        return fetch(url, options)
+      );
+      formData.append("file", fileStream);
+
+      let url = "https://api.nftport.xyz/v0/files";
+      let options = {
+        method: "POST",
+        headers: {
+          Authorization: AUTH,
+        },
+        body: formData,
+      };
+
+      return fetch(url, options)
         .then(async (res) => {
           const status = res.status;
-          
+
           if (status === 200) {
             return res.json();
           } else {
@@ -104,16 +103,13 @@ async function fetchWithRetry(file) {
           await timer(TIMEOUT);
           fetch_retry(_file);
         });
-      };
-      return fetch_retry(file);
-    });
-  }
+    };
+    return fetch_retry(file);
+  });
+}
 
-  
-  uploadImagesToIPFS();
+// uploadImagesToIPFS();
 
-  
-  module.exports = {
-    uploadImagesToIPFS,
-  };
-  
+module.exports = {
+  uploadImagesToIPFS,
+};
