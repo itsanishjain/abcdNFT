@@ -4,12 +4,12 @@ const multer = require("multer");
 //Define where project photos will be stored
 var storage = multer.diskStorage({
   destination: function (request, file, callback) {
-    if (fs.existsSync("./pub")) {
-      callback(null, "./pub");
+    if (fs.existsSync("./layers")) {
+      callback(null, "./layers");
     }
     else{
-      fs.mkdirSync("./pub");
-      callback(null, "./pub");
+      fs.mkdirSync("./layers");
+      callback(null, "./layers");
     }
   },
   filename: function (request, file, callback) {

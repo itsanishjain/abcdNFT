@@ -33,24 +33,11 @@ app.use(express.urlencoded({ extended: true }));
 // set to parse cookies
 app.use(cookieParser());
 
-// write a function to handle requests
 app.get("/", (req, res) => {
-  //   res.send("Hello World!");
-  res.render("home");
+  res.render("home", { message: "" });
 });
 
-app.post("/generate", (req, res) => {
-  console.log("Generating...", req.body);
-  buildSetup();
-  startCreating(req.body.editionSize);
-  console.log("Generated");
-
-  res.send("Hello World!");
-});
-
-// let uploaeImagesDone = false;
-// let layerNumber = 0;
-
+// use to upload layers of images
 app.post("/upload-layers", upload.array("images", 10), function (req, res) {
   let layerNumber;
   if (req.cookies.layerNumber) {
@@ -63,8 +50,8 @@ app.post("/upload-layers", upload.array("images", 10), function (req, res) {
     layerNumber = 0;
   }
 
-  let newPath = "./pub/layer_" + layerNumber.toString();
-  let oldPath = "./pub";
+  let newPath = "./layers/layer_" + layerNumber.toString();
+  let oldPath = "./layers";
 
   if (fs.existsSync(newPath)) {
     fs.rmdirSync(newPath, { recursive: true });
@@ -85,15 +72,27 @@ app.post("/upload-layers", upload.array("images", 10), function (req, res) {
       }
     }
   });
-  res.send("uploaded Layers" + layerNumber.toString());
+
+  // res.send("uploaded Layers" + layerNumber.toString());
+  res.render("home", { message: `uploaded layer ${layerNumber.toString()}` });
 });
 
-app.post("/upload-images-to-ipfs", async (req, res) => {
-  console.log("uploading images to ipfs");
-  // uploadImagesToIPFS();
-  uploadMetaToIPFS();
-  console.log("UPLOADEDDDDDDDDDDDDDDDDD");
-  res.send("uploaded images to ipfs");
+// use to generate the final image using Hashlib engine
+app.post("/generate", async (req, res) => {
+  console.log("Generating...", req.body);
+  buildSetup();
+  startCreating(req.body.editionSize);
+  console.log("Generated");
+  res.render("home", { message: "Your art is generated" });
+});
+
+app.post("/upload-to-ipfs", async (req, res) => {
+  console.log("uploading images and then metadata to ipfs");
+  await uploadImagesToIPFS();
+  await uploadMetaToIPFS();
+  console.log("uploading DONE....");
+  // res.send("uploaded images and metadata to ipfs");
+  res.render("home", { message: "uploaded images and metadata to ipfs" });
 });
 
 app.get("/my-nfts", async (req, res) => {

@@ -1,10 +1,22 @@
 <%- include('partials/header') -%>
 
     
-    <title>ABCDNFT</title>
+  <title>ABCDNFT</title>
   </head>
-  <body>
+
+  <style>
+    body{
+      max-width: 60%;
+      margin: 0 auto;
+    }
+  </style>
+
+
+<body>
+    <h1 class="error"> <%= message %></h1>
+    
     <h1>Home</h1>
+
 
     <hr />
     <h2>Upload your layers</h2>
@@ -25,9 +37,25 @@
 
     <hr />
     <h2>Upload to IPFS</h2>
-    <!-- <form action="/upload-images-to-ipfs" method="post"> -->
-      <button type="submit">Upload Images</button>
-    <!-- </form> -->
+    <form action="/upload-to-ipfs" method="post">
+      <button id="uploadToIPFS" type="submit">Upload your art to IPFS</button>
+     
+      <div id="load-root"></div>
+   
+      
+    </form>
   </body>
+
+  <script>
+    console.log("home is running....");
+    const btn =  document.querySelector("#uploadToIPFS")
+    btn.addEventListener("click",()=>{
+      console.log("BTN CLICKED");
+      btn.style.display="none";
+      document.querySelector("#load-root").innerHTML = `<div class="loader"></div>`
+    })
+  </script>
   <%- include('partials/footer') -%>
 </html>
+
+

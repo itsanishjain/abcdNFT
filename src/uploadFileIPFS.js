@@ -3,13 +3,9 @@ const fetch = require("node-fetch");
 const path = require("path");
 const basePath = process.cwd();
 const fs = require("fs");
-// import dotenv
 require("dotenv").config();
 
-// const AUTH = "198adc16-5d25-450e-bf19-130b0880a38a";
 const AUTH = process.env.NFTPORT_API_KEY;
-
-// console.log("Uploading files to IPFS...", AUTH);
 
 const TIMEOUT = 1000; // Milliseconds. Extend this if needed to wait for each upload. 1000 = 1 second.
 
